@@ -1,8 +1,8 @@
 //-------------------------------------------------------
 //-------------------- VARIABLES ------------------------
 const body = document.querySelector("body");
-const btnStart = document.querySelector("[data-start]");
-const btnStop = document.querySelector("[data-stop]");
+const btnStart = document.querySelector("button[data-start]");
+const btnStop = document.querySelector("button[data-stop]");
 
 let bodyColor = null;
 
@@ -21,9 +21,11 @@ btnStart.addEventListener("click", () => {
 	bodyColor = setInterval(() => {
 		body.style.backgroundColor = getRandomHexColor();
 	}, 1000);
+	btnStart.disabled = true;
 });
 
 btnStop.addEventListener("click", () => {
 	clearInterval(bodyColor);
-  console.log(`Interval with id ${timerId} has stopped!`);
+  console.log(`Interval with id ${bodyColor} has stopped!`);
+	btnStart.disabled = false;
 });

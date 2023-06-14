@@ -13,48 +13,53 @@ Notiflix.Notify.warning('Memento te hominem esse');
 Notiflix.Notify.info('Cogito ergo sum');
 */
 
-const delay = document.querySelector('input[name="delay"]');
-const step = document.querySelector('input[name="step"]');
-const amount = document.querySelector('input[name="amount"]');
+const delayInput = document.querySelector('input[name="delay"]');
+const stepInput = document.querySelector('input[name="step"]');
+const amountInput = document.querySelector('input[name="amount"]');
 const btnStart = document.querySelector("button");
 let promiseArray = [];
 
 
 
-function fillArray() {
-  let increment = step;
-  for(let i=1; i<=amount; i+=1) {
-    promiseArray.push(createPromise(i, increment));
-    increment += step;
-  }
-}
-
-function createPromise(position, step) {
-  const shouldResolve = Math.random() > 0.3;
+const createPromise = (position, pasos) => {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
+      const shouldResolve = Math.random() > 0.3;
+
       if (shouldResolve) {
-        resolve(`✅ Fulfilled promise ${position} in ${delay}ms`);
+        resolve(`✅ Fulfilled promise ${position} in ${pasos} ms`);
       } else {
-        reject(`❌ Rejected promise ${position} in ${delay}ms`);
+        reject(`❌ Rejected promise ${position} in ${pasos} ms`);
       }
-    }, step); //setTimeout
+    }, pasos); //setTimeout
   }); //promise
 } //function
 
 
-btnStart.addEventListener("click", () => {
-  setTimeout(() => {
-    console.log("Luego de 3 segundos");
-    fillArray();
-  }, delay);
+btnStart.addEventListener("click", (e) => {
+  e.preventDefault();
+  let delay = parseInt(delayInput.value);
+  let step = parseInt(stepInput.value);
+  let amount = parseInt(amountInput.value);
+
+  let increment = step + delay;
+
+  for(let i=1; i<=amount; i+=1) {
+    let prom = createPromise(i, increment);
+    promiseArray.push(prom);
+    increment += step;
+  }
 
   Promise.all(promiseArray)
-  .then((text) => console.log(text))
-  .catch((text) => console.log(text));
+    .then(resolved => console.log(resolved))
+    .catch(error => console.log(error));
 
+/*   setTimeout(() => {
+    console.log(delay);
+    console.log(step);
+    console.log(amount);
+
+    
+  }, delay + (step * amount)); */
 });
-
-
-
 

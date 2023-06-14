@@ -17,16 +17,26 @@ const delay = document.querySelector('input[name="delay"]');
 const step = document.querySelector('input[name="step"]');
 const amount = document.querySelector('input[name="amount"]');
 const btnStart = document.querySelector("button");
+let promiseArray = [];
 
+
+
+function fillArray() {
+  let increment = step;
+  for(let i=1; i<=amount; i+=1) {
+    promiseArray.push(createPromise(i, increment));
+    increment += step;
+  }
+}
 
 function createPromise(position, step) {
   const shouldResolve = Math.random() > 0.3;
   return new Promise((resolve, reject) => {
     setTimeout(() => {
       if (shouldResolve) {
-        resolve("success!");
+        resolve(`✅ Fulfilled promise ${position} in ${delay}ms`);
       } else {
-        reject("error!");
+        reject(`❌ Rejected promise ${position} in ${delay}ms`);
       }
     }, step); //setTimeout
   }); //promise
@@ -34,17 +44,17 @@ function createPromise(position, step) {
 
 
 btnStart.addEventListener("click", () => {
-  console.log("delay: ", delay);
-  console.log("step: ", step);
-  console.log("amount: ", amount);
-
   setTimeout(() => {
-    for(let i=1; i<=amount; i+=1) {
-      createPromise(i, step)
-      .then(({position, delay}) => console.log(`✅ Fulfilled promise ${position} in ${delay}ms`))
-      .catch(({position, delay}) => console.log(`❌ Rejected promise ${position} in ${delay}ms`));
-    }
+    console.log("Luego de 3 segundos");
+    fillArray();
   }, delay);
+
+  Promise.all(promiseArray)
+  .then((text) => console.log(text))
+  .catch((text) => console.log(text));
+
 });
+
+
 
 

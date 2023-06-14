@@ -21,7 +21,7 @@ let promiseArray = [];
 
 
 
-const createPromise = (position, pasos) => {
+function createPromise(position, pasos){
   return new Promise((resolve, reject) => {
     setTimeout(() => {
       const shouldResolve = Math.random() > 0.3;
@@ -41,25 +41,27 @@ btnStart.addEventListener("click", (e) => {
   let delay = parseInt(delayInput.value);
   let step = parseInt(stepInput.value);
   let amount = parseInt(amountInput.value);
+  let prom = null;
 
   let increment = step + delay;
 
   for(let i=1; i<=amount; i+=1) {
-    let prom = createPromise(i, increment);
-    promiseArray.push(prom);
+    promiseArray.push(createPromise(i, increment));
     increment += step;
   }
 
   Promise.all(promiseArray)
-    .then(resolved => console.log(resolved))
-    .catch(error => console.log(error));
+    .then(resolved => Notiflix.Notify.success(resolved))
+    .catch(error => Notiflix.Notify.failure(error));
 
-/*   setTimeout(() => {
+  /* setTimeout(() => {
     console.log(delay);
     console.log(step);
     console.log(amount);
 
     
-  }, delay + (step * amount)); */
+
+  }, delay + (step * amount) ); */
+
 });
 

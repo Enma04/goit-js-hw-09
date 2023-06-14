@@ -17,7 +17,6 @@ const delayInput = document.querySelector('input[name="delay"]');
 const stepInput = document.querySelector('input[name="step"]');
 const amountInput = document.querySelector('input[name="amount"]');
 const btnStart = document.querySelector("button");
-let promiseArray = [];
 
 
 
@@ -46,22 +45,11 @@ btnStart.addEventListener("click", (e) => {
   let increment = step + delay;
 
   for(let i=1; i<=amount; i+=1) {
-    promiseArray.push(createPromise(i, increment));
+    let prom = (createPromise(i, increment));
+    prom
+      .then(resolved => Notiflix.Notify.success(resolved))
+      .catch(error => Notiflix.Notify.failure(error));
     increment += step;
   }
-
-  Promise.all(promiseArray)
-    .then(resolved => Notiflix.Notify.success(resolved))
-    .catch(error => Notiflix.Notify.failure(error));
-
-  /* setTimeout(() => {
-    console.log(delay);
-    console.log(step);
-    console.log(amount);
-
-    
-
-  }, delay + (step * amount) ); */
-
 });
 

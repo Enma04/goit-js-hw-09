@@ -17,6 +17,11 @@ img {
   max-width: 100%;
 }
 
+/*
+  --------------------------------------
+  02-timer
+*/
+
 .timer{
   display: flex;
   gap: 25px;
